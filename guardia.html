@@ -1,0 +1,131 @@
+<!DOCTYPE html> 
+
+<html lang="es"> 
+
+<head> 
+
+  <meta charset="UTF-8" /> 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+
+  <title>Guardia - Sistema de Acceso Vehicular</title> 
+
+  <link rel="stylesheet" href="styles.css" /> 
+
+  <!-- Librería para escaneo QR --> 
+
+  <script src="https://unpkg.com/html5-qrcode"></script> 
+
+  <script src="guardia.js" defer></script> 
+
+</head> 
+
+<body> 
+
+  <header> 
+
+    <h1>Panel Guardia</h1> 
+
+    <p>Escanea QR de alumnos para registrar acceso</p> 
+
+    <nav class="top-nav"> 
+
+      <a href="index.html">Administrador</a> 
+
+    </nav> 
+
+    <nav class="top-nav"> 
+
+      <a href="guardia.html">Guardia</a> 
+
+    </nav> 
+
+  </header> 
+
+ 
+
+  <main class="grid"> 
+
+    <section class="card"> 
+
+      <h2>Escanear QR</h2> 
+
+       
+
+      <!-- Contenedor para la cámara --> 
+
+      <div id="reader"></div> 
+
+       
+
+      <!-- Botones de control --> 
+
+      <div class="botones-escaner"> 
+
+        <button id="startScanBtn" class="btn-primario">Iniciar cámara</button> 
+
+        <button id="stopScanBtn" class="btn-secundario" disabled>Detener cámara</button> 
+
+      </div> 
+
+ 
+
+      <!-- Mensaje de resultado --> 
+
+      <div id="resultado" class="resultado neutro"> 
+
+        Presiona "Iniciar cámara" para comenzar 
+
+      </div> 
+
+    </section> 
+
+ 
+
+    <section class="card full"> 
+
+      <h2>Últimos accesos registrados</h2> 
+
+      <button id="refreshBtn">Actualizar historial</button> 
+
+      <div class="table-wrap"> 
+
+        <table> 
+
+          <thead> 
+
+            <tr> 
+
+              <th>ID</th> 
+
+              <th>Matrícula</th> 
+
+              <th>Nombre</th> 
+
+              <th>Placas</th> 
+
+              <th>Tipo</th> 
+
+              <th>Estatus</th> 
+
+              <th>Mensaje</th> 
+
+              <th>Fecha/Hora</th> 
+
+            </tr> 
+
+          </thead> 
+
+          <tbody id="tablaAccesos"></tbody> 
+
+        </table> 
+
+      </div> 
+
+    </section> 
+
+  </main> 
+
+</body> 
+
+</html> 
