@@ -52,3 +52,10 @@ CREATE INDEX IF NOT EXISTS idx_alumnos_matricula ON alumnos (matricula);
 CREATE INDEX IF NOT EXISTS idx_accesos_alumno_id ON accesos (alumno_id);
 CREATE INDEX IF NOT EXISTS idx_accesos_qr_code ON accesos (qr_code);
 CREATE INDEX IF NOT EXISTS idx_accesos_fecha_hora ON accesos (fecha_hora);
+
+-- Testing: Insertar datos de prueba iniciales
+INSERT OR IGNORE INTO alumnos (matricula, nombre, gr_code, auto_placa, activo)
+VALUES ('12345678', 'Santiago Ek Mar', 'QR-TEST-SANTIAGO-12345678', 'ABC-1234', 1);
+
+INSERT OR IGNORE INTO accesos (alumno_id, matricula, nombre, placa, qr_code, tipo, estatus, mensaje)
+VALUES (1, '12345678', 'Santiago Ek Mar', 'ABC-1234', 'QR-TEST-SANTIAGO-12345678', 'ENTRADA', 'EXITOSO', 'Entrada de prueba cargada automáticamente');
