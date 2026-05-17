@@ -45,3 +45,10 @@ CREATE TABLE IF NOT EXISTS qr_temporales (
 -- 5 Inserción de Configuración Inicial
 INSERT OR IGNORE INTO configuracion (clave, valor) 
 VALUES ('gr_tiempo_segundos', '60');
+
+-- Índices (Optimización de Queries)
+CREATE INDEX IF NOT EXISTS idx_alumnos_qr_code ON alumnos (qr_code);
+CREATE INDEX IF NOT EXISTS idx_alumnos_matricula ON alumnos (matricula);
+CREATE INDEX IF NOT EXISTS idx_accesos_alumno_id ON accesos (alumno_id);
+CREATE INDEX IF NOT EXISTS idx_accesos_qr_code ON accesos (qr_code);
+CREATE INDEX IF NOT EXISTS idx_accesos_fecha_hora ON accesos (fecha_hora);
