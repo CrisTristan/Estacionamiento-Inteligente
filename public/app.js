@@ -188,3 +188,159 @@ async function cargarAlumnos() {
 
 } 
 
+
+window.eliminarAlumno = async function(id, nombre) { 
+
+  const confirmar = confirm(`¿Seguro que deseas eliminar a ${nombre}?`); 
+
+  if (!confirmar) return; 
+
+  const res = await fetch(`${API}/alumnos/${id}`, { 
+
+    method: 'DELETE' 
+
+  }); 
+
+  const data = await res.json(); 
+
+  if (res.ok) { 
+
+    alert(data.mensaje); 
+
+    limpiarFormulario(); 
+
+    contenedorQR.innerHTML = ''; 
+
+    await cargarAlumnos(); 
+
+    await cargarHistorial(); 
+
+  } else { 
+
+    alert(data.error || 'No se pudo eliminar el alumno.'); 
+
+  } 
+
+}; 
+
+
+window.regenerarQR = async function(id, nombre) { 
+
+  const confirmar = confirm(`¿Deseas generar un nuevo QR para ${nombre}? El QR anterior dejará de funcionar.`); 
+
+  if (!confirmar) return; 
+
+  const res = await fetch(`${API}/alumnos/${id}/regenerar-qr`, { 
+
+    method: 'POST' 
+
+  }); 
+
+  const data = await res.json(); 
+
+  if (res.ok) { 
+
+    alert(data.mensaje); 
+
+    contenedorQR.innerHTML = ` 
+
+      <div> 
+
+        <p><strong>Nuevo QR generado para:</strong> ${nombre}</p> 
+
+        <img class="preview-qr" src="${data.qr_url}" alt="Nuevo QR del alumno" /> 
+
+        <br /> 
+
+        <a class="qr-link" href="${data.qr_url}" target="_blank">Abrir / descargar nuevo QR</a> 
+
+      </div> 
+
+    `; 
+
+    await cargarAlumnos(); 
+
+  } else { 
+
+    alert(data.error || 'No se pudo regenerar el QR.'); 
+
+  } 
+
+}; 
+
+
+formAlumno.addEventListener('submit', async (e) => { 
+
+  e.preventDefault(); 
+
+  const id = document.getElementById('alumnoId').value.trim(); 
+
+  const payload = { 
+
+    matricula: document.getElementById('matricula').value.trim(), 
+
+    nombre: document.getElementById('nombre').value.trim(), 
+
+    auto_placa: document.getElementById('auto_placa').value.trim(), 
+
+    activo: document.getElementById('activo').checked 
+
+  }; 
+
+  if (!validarFormularioAlumno(payload.matricula, payload.nombre, payload.auto_placa)) { 
+
+    return; 
+
+  } 
+
+  const res = await fetch('/api/alumnos', { 
+
+    method: id ? 'PUT' : 'POST', 
+
+    headers: { 'Content-Type': 'application/json' }, 
+
+    body: JSON.stringify(payload) 
+
+  }); 
+
+  const data = await res.json(); 
+
+  if (res.ok) { 
+
+    if (id) { 
+
+      alert(data.mensaje || 'Alumno actualizado correctamente.'); 
+
+      contenedorQR.innerHTML = `<p><strong>Alumno actualizado correctamente.</strong></p>`; 
+
+    } else { 
+
+      contenedorQR.innerHTML = ` 
+
+        <div> 
+
+          <p><strong>QR generado para:</strong> ${payload.nombre}</p> 
+
+          <img class="preview-qr" src="${data.qr_url}" alt="QR del alumno" /> 
+
+          <br /> 
+
+          <a class="qr-link" href="${data.qr_url}" target="_blank">Abrir / descargar QR</a> 
+
+        </div> 
+
+      `; 
+
+    } 
+
+    limpiarFormulario(); 
+
+    await cargarAlumnos(); 
+
+  } else { 
+
+    alert(data.error || 'No se pudo guardar el alumno.'); 
+
+  } 
+
+}); 
