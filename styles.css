@@ -29,3 +29,37 @@ body {
   line-height: 1.6; 
 
 } 
+
+eader { 
+
+  background-color: var(--dark-bg); 
+
+  color: white; 
+
+  padding: 20px; 
+
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+
+} 
+
+ 
+
+header h1 { 
+
+  margin: 0 0 10px 0; 
+
+  font-size: 28px; 
+
+} 
+
+ 
+
+header p { 
+
+  margin: 0 0 15px 0; 
+
+  font-size: 14px; 
+
+  color: #bdc3c7; 
+
+} 
