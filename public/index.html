@@ -1,0 +1,77 @@
+<!DOCTYPE html> 
+
+<html lang="es"> 
+
+<section class="card"> 
+
+  <h2>Registrar / editar alumno</h2> 
+
+  <form id="formAlumno"> 
+
+    <input type="hidden" id="alumnoId" /> 
+
+    <input type="text" id="matricula" placeholder="Matrícula" required /> 
+
+    <input type="text" id="nombre" placeholder="Nombre completo" required /> 
+
+    <input type="text" id="auto_placa" placeholder="Placas del vehículo" /> 
+
+    <label class="checkline"> 
+
+      <input type="checkbox" id="activo" checked /> 
+
+      Alumno activo 
+
+    </label> 
+
+    <button type="submit">Guardar alumno</button> 
+
+    <button type="button" id="cancelarEdicionBtn" class="btn-secundario">Cancelar edición</button> 
+
+  </form> 
+
+ 
+
+  <div id="contenedorQR"></div> 
+
+</section> 
+
+
+<section class="card full"> 
+
+  <h2>Alumnos registrados</h2> 
+
+  <button id="refreshAlumnosBtn">Actualizar alumnos</button> 
+
+  <div class="table-wrap"> 
+
+    <table> 
+
+      <thead> 
+
+        <tr> 
+
+          <th>ID</th> 
+
+          <th>Matrícula</th> 
+
+          <th>Nombre</th> 
+
+          <th>Placas</th> 
+
+          <th>Activo</th> 
+
+          <th>Acciones</th> 
+
+        </tr> 
+
+      </thead> 
+
+      <tbody id="tablaAlumnos"></tbody> 
+
+    </table> 
+
+  </div> 
+
+</section> 
+
