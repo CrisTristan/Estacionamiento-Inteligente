@@ -235,3 +235,215 @@ label.checkline input[type="checkbox"] {
   cursor: pointer; 
 
 } 
+
+button { 
+
+  padding: 10px 16px; 
+
+  border: none; 
+
+  border-radius: 4px; 
+
+  font-size: 14px; 
+
+  font-weight: 600; 
+
+  cursor: pointer; 
+
+  transition: all 0.3s; 
+
+} 
+
+ 
+
+button[type="submit"] { 
+
+  background-color: var(--primary-color); 
+
+  color: white; 
+
+} 
+
+ 
+
+button[type="submit"]:hover { 
+
+  background-color: #2980b9; 
+
+  transform: translateY(-2px); 
+
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3); 
+
+} 
+
+ 
+
+button[type="submit"]:active { 
+
+  transform: translateY(0); 
+
+} 
+
+ 
+
+button.btn-secundario { 
+
+  background-color: var(--neutral-color); 
+
+  color: white; 
+
+} 
+
+ 
+
+button.btn-secundario:hover { 
+
+  background-color: #7f8c8d; 
+
+} 
+
+ 
+
+button.btn-editar { 
+
+  background-color: var(--primary-color); 
+
+  color: white; 
+
+  padding: 6px 12px; 
+
+  font-size: 12px; 
+
+  margin-right: 5px; 
+
+} 
+
+ 
+
+button.btn-editar:hover { 
+
+  background-color: #2980b9; 
+
+} 
+
+ 
+
+button.btn-eliminar { 
+
+  background-color: var(--danger-color); 
+
+  color: white; 
+
+  padding: 6px 12px; 
+
+  font-size: 12px; 
+
+} 
+
+ 
+
+button.btn-eliminar:hover { 
+
+  background-color: #c0392b; 
+
+} 
+
+ 
+
+
+
+.table-wrap { 
+
+  overflow-x: auto; 
+
+  border-radius: 4px; 
+
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
+
+} 
+
+ 
+
+table { 
+
+  width: 100%; 
+
+  border-collapse: collapse; 
+
+  background: white; 
+
+} 
+
+ 
+
+table thead { 
+
+  background-color: var(--dark-bg); 
+
+  color: white; 
+
+} 
+
+ 
+
+table th { 
+
+  padding: 12px; 
+
+  text-align: left; 
+
+  font-weight: 600; 
+
+  font-size: 14px; 
+
+} 
+
+ 
+
+table td { 
+
+  padding: 12px; 
+
+  border-bottom: 1px solid #ecf0f1; 
+
+  font-size: 14px; 
+
+} 
+
+ 
+
+table tbody tr:hover { 
+
+  background-color: #f9f9f9; 
+
+} 
+
+ 
+
+table tbody tr:nth-child(even) { 
+
+  background-color: #fafafa; 
+
+} 
+
+ 
+
+@media (max-width: 768px) { 
+
+  table { 
+
+    font-size: 12px; 
+
+  } 
+
+ 
+
+  table th, 
+
+  table td { 
+
+    padding: 8px; 
+
+  } 
+
+} 
