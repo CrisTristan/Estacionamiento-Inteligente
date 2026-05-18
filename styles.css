@@ -95,3 +95,143 @@ nav.top-nav a:hover {
   background-color: var(--primary-color); 
 
 } 
+
+main.grid { 
+
+  display: grid; 
+
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+
+  gap: 20px; 
+
+  padding: 20px; 
+
+  max-width: 1400px; 
+
+  margin: 0 auto; 
+
+} 
+
+ 
+
+@media (max-width: 768px) { 
+
+  main.grid { 
+
+    grid-template-columns: 1fr; 
+
+    padding: 10px; 
+
+  } 
+
+} 
+
+ 
+
+section.card { 
+
+  background: white; 
+
+  padding: 20px; 
+
+  border-radius: 8px; 
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+
+} 
+
+ 
+
+section.card.full { 
+
+  grid-column: 1 / -1; 
+
+} 
+
+ 
+
+form { 
+
+  display: flex; 
+
+  flex-direction: column; 
+
+  gap: 12px; 
+
+} 
+
+ 
+
+input[type="text"], 
+
+input[type="number"], 
+
+select { 
+
+  padding: 10px 12px; 
+
+  border: 1px solid #ddd; 
+
+  border-radius: 4px; 
+
+  font-size: 14px; 
+
+  transition: border-color 0.3s; 
+
+} 
+
+ 
+
+input[type="text"]:focus, 
+
+input[type="number"]:focus, 
+
+select:focus { 
+
+  outline: none; 
+
+  border-color: var(--primary-color); 
+
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); 
+
+} 
+
+ 
+
+label { 
+
+  font-weight: 500; 
+
+  color: #333; 
+
+  margin-bottom: 4px; 
+
+} 
+
+ 
+
+label.checkline { 
+
+  display: flex; 
+
+  align-items: center; 
+
+  gap: 8px; 
+
+  font-weight: normal; 
+
+  margin: 8px 0; 
+
+} 
+
+ 
+
+label.checkline input[type="checkbox"] { 
+
+  width: 18px; 
+
+  height: 18px; 
+
+  cursor: pointer; 
+
+} 
