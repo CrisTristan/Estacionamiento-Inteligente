@@ -63,3 +63,35 @@ header p {
   color: #bdc3c7; 
 
 } 
+
+nav.top-nav { 
+
+  display: inline-block; 
+
+  margin-right: 20px; 
+
+} 
+
+ 
+
+nav.top-nav a { 
+
+  color: white; 
+
+  text-decoration: none; 
+
+  padding: 8px 15px; 
+
+  border-radius: 4px; 
+
+  transition: background-color 0.3s; 
+
+} 
+
+ 
+
+nav.top-nav a:hover { 
+
+  background-color: var(--primary-color); 
+
+} 
