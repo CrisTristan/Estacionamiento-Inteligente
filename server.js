@@ -189,45 +189,7 @@ app.post('/api/alumnos/:id/regenerar-qr', async (req, res) => {
   } 
 }); 
 
-function validarDatosAlumno(matricula, nombre, auto_placa = '') {
-    // Validación de matrícula, nombre y placa con mensajes de error específicos
-  const errores = []; 
-  if (!/^\d{8}$/.test(matricula)) { 
-    errores.push('La matrícula debe tener exactamente 8 números.'); 
-  } 
-  if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre)) { 
-    errores.push('El nombre solo puede contener letras y espacios.'); 
-  } 
-  const placaSinGuion = auto_placa.replace('-', ''); 
-  if (placaSinGuion && !/^[A-Z0-9]{1,7}$/.test(placaSinGuion)) { 
-    errores.push('La placa solo puede contener letras y números, máximo 7 caracteres.'); 
-  } 
-  return errores; 
-}
 
-function generarCodigoQRSeguro() { 
-  //Genera un código QR único y seguro usando crypto para evitar colisiones
-  return `QR-${crypto.randomBytes(32).toString('hex')}`; 
-} 
-
-function generarNombreArchivoQR() { 
-  //Genera un nombre de archivo único usando UUID para evitar colisiones
-  return `qr-${crypto.randomUUID()}.png`; 
-} 
-
-function obtenerAlumnoPorQR(qrCode) { 
-    // Función para obtener un alumno por su código QR
-  return new Promise((resolve, reject) => { 
-    db.get( 
-      'SELECT * FROM alumnos WHERE qr_code = ?', 
-      [qrCode], 
-      (err, row) => { 
-        if (err) reject(err); 
-        else resolve(row); 
-      } 
-    ); 
-  }); 
-} 
 
 app.listen(PORT, () => { 
   console.log(`Servidor corriendo en http://localhost:${PORT}`); 
