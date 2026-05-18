@@ -75,3 +75,59 @@
 
 </section> 
 
+
+<div id="modalEditar" class="modal"> 
+
+  <div class="modal-contenido"> 
+
+    <h2>Editar alumno</h2> 
+
+ 
+
+    <form id="formEditarAlumno"> 
+
+      <input type="hidden" id="editAlumnoId" /> 
+
+ 
+
+      <label>Matrícula</label> 
+
+      <input type="text" id="editMatricula" maxlength="8" placeholder="8 números" required /> 
+
+ 
+
+      <label>Nombre completo</label> 
+
+      <input type="text" id="editNombre" placeholder="Solo letras" required /> 
+
+ 
+
+      <label>Placas</label> 
+
+      <input type="text" id="editPlacas" maxlength="8" placeholder="ABC-1234" /> 
+
+ 
+
+      <label class="checkline"> 
+
+        <input type="checkbox" id="editActivo" /> 
+
+        Alumno activo 
+
+      </label> 
+
+ 
+
+      <div class="modal-botones"> 
+
+        <button type="submit">Guardar cambios</button> 
+
+        <button type="button" id="cerrarModalBtn" class="btn-secundario">Cancelar</button> 
+
+      </div> 
+
+    </form> 
+
+  </div> 
+
+</div> 
