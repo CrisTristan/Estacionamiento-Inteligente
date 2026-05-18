@@ -19,6 +19,17 @@ const qrDir = path.join(__dirname, 'qrs');
 if (!fs.existsSync(qrDir)) {
   fs.mkdirSync(qrDir);
 }
+app.get('/api/alumnos', (req, res) => { 
+    // Endpoint para obtener la lista de alumnos ordenada por ID descendente
+  db.all('SELECT * FROM alumnos ORDER BY id DESC', (err, rows) => { 
+    if (err) { 
+      return res.status(500).json({ error: 'Error al consultar alumnos.' }); 
+
+    } 
+    res.json(rows); 
+
+  }); 
+}); 
 
 app.listen(PORT, () => { 
   console.log(`Servidor corriendo en http://localhost:${PORT}`); 
