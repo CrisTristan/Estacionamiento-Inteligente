@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS alumnos (
     matricula TEXT NOT NULL UNIQUE,
     nombre TEXT NOT NULL,
     qr_code TEXT NOT NULL UNIQUE,
+    qr_file TEXT,
     auto_placa TEXT,
     activo INTEGER NOT NULL DEFAULT 1,
     creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -54,7 +55,7 @@ CREATE INDEX IF NOT EXISTS idx_accesos_qr_code ON accesos (qr_code);
 CREATE INDEX IF NOT EXISTS idx_accesos_fecha_hora ON accesos (fecha_hora);
 
 -- Testing: Insertar datos de prueba iniciales
-INSERT OR IGNORE INTO alumnos (matricula, nombre, gr_code, auto_placa, activo)
+INSERT OR IGNORE INTO alumnos (matricula, nombre, qr_code, auto_placa, activo)
 VALUES ('12345678', 'Santiago Ek Mar', 'QR-TEST-SANTIAGO-12345678', 'ABC-1234', 1);
 
 INSERT OR IGNORE INTO accesos (alumno_id, matricula, nombre, placa, qr_code, tipo, estatus, mensaje)
