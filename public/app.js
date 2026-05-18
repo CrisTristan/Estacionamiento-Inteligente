@@ -344,3 +344,61 @@ formAlumno.addEventListener('submit', async (e) => {
   } 
 
 }); 
+
+
+cancelarEdicionBtn.addEventListener('click', () => { 
+
+  limpiarFormulario(); 
+
+  contenedorQR.innerHTML = ''; 
+
+}); 
+
+
+refreshAlumnosBtn.addEventListener('click', cargarAlumnos);
+
+
+window.abrirModalEditar = function(id, matricula, nombre, placas, activo) { 
+
+  editAlumnoId.value = id; 
+
+  editMatricula.value = matricula; 
+
+  editNombre.value = nombre; 
+
+  editPlacas.value = placas || ''; 
+
+  editActivo.checked = Boolean(activo); 
+
+  modalEditar.classList.add('activo'); 
+
+}; 
+
+
+function cerrarModalEditar() { 
+
+  modalEditar.classList.remove('activo'); 
+
+} 
+
+
+if (cerrarModalBtn) { 
+
+  cerrarModalBtn.addEventListener('click', cerrarModalEditar); 
+
+} 
+
+if (modalEditar) { 
+
+  modalEditar.addEventListener('click', (e) => { 
+
+    if (e.target === modalEditar) { 
+
+      cerrarModalEditar(); 
+
+    } 
+
+  }); 
+
+} 
+
