@@ -670,3 +670,107 @@ table tbody tr:nth-child(even) {
   } 
 
 } 
+
+.preview-qr { 
+
+  max-width: 300px; 
+
+  width: 100%; 
+
+  height: auto; 
+
+  margin: 15px 0; 
+
+  padding: 10px; 
+
+  background: white; 
+
+  border: 2px solid #ecf0f1; 
+
+  border-radius: 4px; 
+
+} 
+
+ 
+
+.qr-link { 
+
+  display: inline-block; 
+
+  margin-top: 10px; 
+
+  padding: 10px 16px; 
+
+  background-color: var(--secondary-color); 
+
+  color: white; 
+
+  text-decoration: none; 
+
+  border-radius: 4px; 
+
+  transition: background-color 0.3s; 
+
+} 
+
+ 
+
+.qr-link:hover { 
+
+  background-color: #27ae60; 
+
+} 
+
+
+
+h1, h2, h3 { 
+
+  color: var(--dark-bg); 
+
+  margin-bottom: 15px; 
+
+} 
+
+ 
+
+h1 { 
+
+  font-size: 32px; 
+
+} 
+
+ 
+
+h2 { 
+
+  font-size: 22px; 
+
+} 
+
+ 
+
+h3 { 
+
+  font-size: 18px; 
+
+} 
+
+ 
+
+p { 
+
+  margin: 0 0 10px 0; 
+
+  color: #555; 
+
+} 
+
+ 
+
+strong { 
+
+  color: var(--dark-bg); 
+
+  font-weight: 600; 
+
+} 
