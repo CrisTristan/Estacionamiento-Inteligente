@@ -402,3 +402,95 @@ if (modalEditar) {
 
 } 
 
+
+if (editMatricula) { 
+
+  editMatricula.addEventListener('input', () => { 
+
+    editMatricula.value = soloNumeros(editMatricula.value).slice(0, 8); 
+
+  }); 
+
+} 
+
+if (editNombre) { 
+
+  editNombre.addEventListener('input', () => { 
+
+    editNombre.value = soloLetras(editNombre.value); 
+
+  }); 
+
+} 
+
+if (editPlacas) { 
+
+  editPlacas.addEventListener('input', () => { 
+
+    editPlacas.value = formatearPlaca(editPlacas.value); 
+
+  }); 
+
+} 
+
+
+if (formEditarAlumno) { 
+
+  formEditarAlumno.addEventListener('submit', async (e) => { 
+
+    e.preventDefault(); 
+
+    const id = editAlumnoId.value; 
+
+    const payload = { 
+
+      matricula: editMatricula.value.trim(), 
+
+      nombre: editNombre.value.trim(), 
+
+      auto_placa: editPlacas.value.trim(), 
+
+      activo: editActivo.checked 
+
+    }; 
+
+    if (!validarFormularioAlumno(payload.matricula, payload.nombre, payload.auto_placa)) { 
+
+      return; 
+
+    } 
+
+    const res = await fetch(`${API}/alumnos/${id}`, { 
+
+      method: 'PUT', 
+
+      headers: { 'Content-Type': 'application/json' }, 
+
+      body: JSON.stringify(payload) 
+
+    }); 
+
+    const data = await res.json(); 
+
+    if (res.ok) { 
+
+      alert('Alumno actualizado correctamente.'); 
+
+      cerrarModalEditar(); 
+
+      await cargarAlumnos(); 
+
+    } else { 
+
+      alert(data.error || 'No se pudo actualizar el alumno.'); 
+
+    } 
+
+  }); 
+
+} 
+
+
+cargarAlumnos(); 
+
+refreshAlumnosBtn.addEventListener('click', cargarAlumnos); 
