@@ -1,17 +1,24 @@
-const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
-
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
+const QRCode = require('qrcode');
+const { db, initDb } = require('./db');
+const crypto = require('crypto');
 const app = express();
+const PORT = 3001;
 
+initDb();
+
+app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/qrs', express.static(path.join(__dirname, 'qrs')));
 
-const db = new sqlite3.Database("./database.db");
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+const qrDir = path.join(__dirname, 'qrs');
+if (!fs.existsSync(qrDir)) {
+  fs.mkdirSync(qrDir);
+}
 
 // ===============================
 // HELPERS
@@ -102,6 +109,46 @@ function insertarAcceso(data) {
     );
   });
 }
+
+function validarDatosAlumno(matricula, nombre, auto_placa = '') {
+    // Validación de matrícula, nombre y placa con mensajes de error específicos
+  const errores = []; 
+  if (!/^\d{8}$/.test(matricula)) { 
+    errores.push('La matrícula debe tener exactamente 8 números.'); 
+  } 
+  if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre)) { 
+    errores.push('El nombre solo puede contener letras y espacios.'); 
+  } 
+  const placaSinGuion = auto_placa.replace('-', ''); 
+  if (placaSinGuion && !/^[A-Z0-9]{1,7}$/.test(placaSinGuion)) { 
+    errores.push('La placa solo puede contener letras y números, máximo 7 caracteres.'); 
+  } 
+  return errores; 
+}
+
+function generarCodigoQRSeguro() { 
+  //Genera un código QR único y seguro usando crypto para evitar colisiones
+  return `QR-${crypto.randomBytes(32).toString('hex')}`; 
+} 
+
+function generarNombreArchivoQR() { 
+  //Genera un nombre de archivo único usando UUID para evitar colisiones
+  return `qr-${crypto.randomUUID()}.png`; 
+} 
+
+function obtenerAlumnoPorQR(qrCode) { 
+    // Función para obtener un alumno por su código QR
+  return new Promise((resolve, reject) => { 
+    db.get( 
+      'SELECT * FROM alumnos WHERE qr_code = ?', 
+      [qrCode], 
+      (err, row) => { 
+        if (err) reject(err); 
+        else resolve(row); 
+      } 
+    ); 
+  }); 
+} 
 
 // ===============================
 // ENDPOINTS
@@ -249,27 +296,7 @@ app.put("/api/configuracion/qr-tiempo", (req, res) => {
     },
   );
 });
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const fs = require('fs');
-const QRCode = require('qrcode');
-const { db, initDb } = require('./db');
-const crypto = require('crypto');
-const app = express();
-const PORT = 3001;
 
-initDb();
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/qrs', express.static(path.join(__dirname, 'qrs')));
-
-const qrDir = path.join(__dirname, 'qrs');
-if (!fs.existsSync(qrDir)) {
-  fs.mkdirSync(qrDir);
-}
 app.get('/api/alumnos', (req, res) => { 
     // Endpoint para obtener la lista de alumnos ordenada por ID descendente
   db.all('SELECT * FROM alumnos ORDER BY id DESC', (err, rows) => { 
@@ -439,46 +466,6 @@ app.post('/api/alumnos/:id/regenerar-qr', async (req, res) => {
     res.status(500).json({ error: 'Error al regenerar QR.' }); 
   } 
 }); 
-
-function validarDatosAlumno(matricula, nombre, auto_placa = '') {
-    // Validación de matrícula, nombre y placa con mensajes de error específicos
-  const errores = []; 
-  if (!/^\d{8}$/.test(matricula)) { 
-    errores.push('La matrícula debe tener exactamente 8 números.'); 
-  } 
-  if (!/^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/.test(nombre)) { 
-    errores.push('El nombre solo puede contener letras y espacios.'); 
-  } 
-  const placaSinGuion = auto_placa.replace('-', ''); 
-  if (placaSinGuion && !/^[A-Z0-9]{1,7}$/.test(placaSinGuion)) { 
-    errores.push('La placa solo puede contener letras y números, máximo 7 caracteres.'); 
-  } 
-  return errores; 
-}
-
-function generarCodigoQRSeguro() { 
-  //Genera un código QR único y seguro usando crypto para evitar colisiones
-  return `QR-${crypto.randomBytes(32).toString('hex')}`; 
-} 
-
-function generarNombreArchivoQR() { 
-  //Genera un nombre de archivo único usando UUID para evitar colisiones
-  return `qr-${crypto.randomUUID()}.png`; 
-} 
-
-function obtenerAlumnoPorQR(qrCode) { 
-    // Función para obtener un alumno por su código QR
-  return new Promise((resolve, reject) => { 
-    db.get( 
-      'SELECT * FROM alumnos WHERE qr_code = ?', 
-      [qrCode], 
-      (err, row) => { 
-        if (err) reject(err); 
-        else resolve(row); 
-      } 
-    ); 
-  }); 
-} 
 
 app.listen(PORT, () => { 
   console.log(`Servidor corriendo en http://localhost:${PORT}`); 
