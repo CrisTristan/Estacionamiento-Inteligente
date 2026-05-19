@@ -192,3 +192,60 @@ app.post("/api/escanear", async (req, res) => {
     });
   }
 });
+
+app.get("/api/configuracion/qr-tiempo", async (req, res) => {
+  try {
+    db.get(
+      "SELECT valor FROM configuracion WHERE clave = 'qr_tiempo_segundos'",
+      (err, row) => {
+        if (err) {
+          return res.status(500).json({
+            error: "No se pudo consultar la configuración.",
+          });
+        }
+
+        res.json({
+          segundos: Number(row?.valor || 60),
+        });
+      },
+    );
+  } catch (error) {
+    res.status(500).json({
+      error: "No se pudo consultar la configuración.",
+    });
+  }
+});
+
+app.put("/api/configuracion/qr-tiempo", (req, res) => {
+  const { segundos } = req.body;
+
+  const tiempo = Number(segundos);
+
+  if (!tiempo || tiempo < 10 || tiempo > 3600) {
+    return res.status(400).json({
+      error: "El tiempo debe estar entre 10 y 3600 segundos.",
+    });
+  }
+
+  db.run(
+    `
+    INSERT INTO configuracion (clave, valor)
+    VALUES ('qr_tiempo_segundos', ?)
+    ON CONFLICT(clave)
+    DO UPDATE SET valor = excluded.valor
+    `,
+    [String(tiempo)],
+    function (err) {
+      if (err) {
+        return res.status(500).json({
+          error: "No se pudo actualizar la configuración.",
+        });
+      }
+
+      res.json({
+        ok: true,
+        mensaje: `Tiempo de QR actualizado a ${tiempo} segundos.`,
+      });
+    },
+  );
+});
