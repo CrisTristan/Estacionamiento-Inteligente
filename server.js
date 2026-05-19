@@ -62,3 +62,43 @@ function obtenerFechaHoraLocal() {
 
   return `${partes.year}-${partes.month}-${partes.day} ${partes.hour}:${partes.minute}:${partes.second}`;
 }
+
+function insertarAcceso(data) {
+  return new Promise((resolve, reject) => {
+    const fechaHora = obtenerFechaHoraLocal();
+
+    const sql = `
+      INSERT INTO accesos (
+        alumno_id,
+        matricula,
+        nombre,
+        placa,
+        qr_code,
+        tipo,
+        fecha_hora,
+        estatus,
+        mensaje
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.run(
+      sql,
+      [
+        data.alumno_id,
+        data.matricula,
+        data.nombre,
+        data.placa,
+        data.qr_code,
+        data.tipo,
+        fechaHora,
+        data.estatus,
+        data.mensaje,
+      ],
+      function (err) {
+        if (err) reject(err);
+        else resolve({ id: this.lastID });
+      },
+    );
+  });
+}
