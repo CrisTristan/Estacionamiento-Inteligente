@@ -38,3 +38,27 @@ function obtenerUltimoAcceso(alumnoId) {
     );
   });
 }
+
+function obtenerFechaHoraLocal() {
+  const ahora = new Date();
+
+  const opciones = {
+    timeZone: "America/Cancun",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  };
+
+  const partes = new Intl.DateTimeFormat("es-MX", opciones)
+    .formatToParts(ahora)
+    .reduce((acc, parte) => {
+      acc[parte.type] = parte.value;
+      return acc;
+    }, {});
+
+  return `${partes.year}-${partes.month}-${partes.day} ${partes.hour}:${partes.minute}:${partes.second}`;
+}
