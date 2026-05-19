@@ -1,5 +1,3 @@
-
-
 function soloNumeros(valor) { 
 
   return valor.replace(/\D/g, ''); 
@@ -489,8 +487,69 @@ if (formEditarAlumno) {
   }); 
 
 } 
-
-
 cargarAlumnos(); 
 
 refreshAlumnosBtn.addEventListener('click', cargarAlumnos); 
+
+// Formatea fecha y hora del historial
+function formatearFechaHora(fecha) {
+  const opciones = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
+
+  return new Date(fecha).toLocaleString('es-MX', opciones);
+}
+
+// Configuración y mensajes visuales del sistema
+function setMensajeConfig(mensaje, tipo = 'info') {
+  const mensajeConfig = document.getElementById('mensajeConfig');
+
+  if (!mensajeConfig) return;
+
+  mensajeConfig.textContent = mensaje;
+  mensajeConfig.className = '';
+  mensajeConfig.classList.add(tipo);
+}
+
+// Carga dinámica del historial de accesos
+async function cargarHistorial() {
+  try {
+    const tablaHistorial = document.getElementById('tablaHistorial');
+
+    if (!tablaHistorial) return;
+
+    const res = await fetch(`${API}/historial`);
+    const data = await res.json();
+
+    tablaHistorial.innerHTML = data.map(item => `
+      <tr>
+        <td>${item.id}</td>
+        <td>${item.nombre}</td>
+        <td>${item.matricula}</td>
+        <td>${item.auto_placa || 'Sin placa'}</td>
+        <td>${formatearFechaHora(item.fecha)}</td>
+      </tr>
+    `).join('');
+
+  } catch (error) {
+    console.error('Error cargando historial:', error);
+  }
+}
+
+// Botón para refrescar historial en tiempo real
+const refreshHistorialBtn = document.getElementById('refreshHistorial');
+
+if (refreshHistorialBtn) {
+  refreshHistorialBtn.addEventListener('click', cargarHistorial);
+}
+
+// Inicialización automática del historial y alumnos
+cargarAlumnos();
+cargarHistorial();
+
+refreshAlumnosBtn.addEventListener('click', cargarAlumnos);
