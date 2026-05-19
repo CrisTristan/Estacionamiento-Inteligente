@@ -102,3 +102,19 @@ function insertarAcceso(data) {
     );
   });
 }
+
+// ===============================
+// ENDPOINTS
+// ===============================
+
+app.get("/api/accesos", (req, res) => {
+  db.all("SELECT * FROM accesos ORDER BY fecha_hora DESC", (err, rows) => {
+    if (err) {
+      return res.status(500).json({
+        error: "Error al consultar accesos.",
+      });
+    }
+
+    res.json(rows);
+  });
+});
