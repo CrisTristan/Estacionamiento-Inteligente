@@ -118,3 +118,77 @@ app.get("/api/accesos", (req, res) => {
     res.json(rows);
   });
 });
+
+app.post("/api/escanear", async (req, res) => {
+  try {
+    const { qr_code } = req.body;
+
+    if (!qr_code) {
+      return res.status(400).json({
+        error: "QR code es obligatorio.",
+      });
+    }
+
+    const alumno = await obtenerAlumnoPorQR(qr_code);
+
+    if (!alumno) {
+      return res.status(400).json({
+        acceso: false,
+        mensaje: "QR inválido o alumno no existe.",
+      });
+    }
+
+    if (!alumno.activo) {
+      await insertarAcceso({
+        alumno_id: alumno.id,
+        matricula: alumno.matricula,
+        nombre: alumno.nombre,
+        placa: alumno.auto_placa,
+        qr_code: qr_code,
+        tipo: "ENTRADA",
+        estatus: "DENEGADO",
+        mensaje: "Alumno inactivo",
+      });
+
+      return res.status(403).json({
+        acceso: false,
+        mensaje: "Alumno inactivo. Acceso denegado.",
+      });
+    }
+
+    const ultimoAcceso = await obtenerUltimoAcceso(alumno.id);
+
+    const tipo =
+      !ultimoAcceso || ultimoAcceso.tipo === "SALIDA" ? "ENTRADA" : "SALIDA";
+
+    await insertarAcceso({
+      alumno_id: alumno.id,
+      matricula: alumno.matricula,
+      nombre: alumno.nombre,
+      placa: alumno.auto_placa,
+      qr_code: qr_code,
+      tipo: tipo,
+      estatus: "EXITOSO",
+      mensaje: `${tipo} registrada correctamente.`,
+    });
+
+    res.json({
+      acceso: true,
+      alumno: {
+        id: alumno.id,
+        nombre: alumno.nombre,
+        matricula: alumno.matricula,
+        placa: alumno.auto_placa || "Sin placas",
+      },
+      tipo: tipo,
+      mensaje: `${tipo} registrada correctamente.`,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      error: "Error al registrar escaneo.",
+      detalles: error.message,
+    });
+  }
+});
